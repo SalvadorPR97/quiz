@@ -12,24 +12,39 @@ let questionCounter = 0;
 const controllersText = ["Preview", "Next"];
 //Función para marcar respuestas
 function marcarRespuesta(btn) { 
+  quizElements[questionCounter]["num_respuesta"] = btn.getAttribute("num_respuesta");
   ul1.childNodes.forEach((li) => {
     li.firstChild.style.backgroundColor = "#f8f8f8";
+    li.firstChild.choosed = "false";
   });
   btn.style.backgroundColor = "#3CB371"; 
+  btn.choosed = "true";
 }
+//
+function marcarCorrecta() {
+  ul1.childNodes.forEach((li) => {
+    if (li.firstChild.getAttribute("num_respuesta") == quizElements[questionCounter]["num_respuesta"]) {
+      li.firstChild.style.backgroundColor = "#3CB371";
+    }
+  });
+}
+
 // Función para generar las respuestas 
 function generarRespuestas (indice){
   while (ul1.firstChild){
     ul1.removeChild(ul1.firstChild);
   };
+  let counter = 0;
   quizElements[indice]["answers"].forEach(answer => {
     let btn = document.createElement("button");
     let li = document.createElement("li");
     btn.className = "answer-btn";
+    btn.setAttribute("num_respuesta", counter);
     btn.textContent = answer;
     btn.addEventListener("click", () => { 
       marcarRespuesta(btn);
     });
+    counter++;
     li.append(btn);
     ul1.append(li);
   });
@@ -79,6 +94,7 @@ btnPreview.addEventListener("click", () =>{
   questionCounter--;
   p1.textContent = quizElements[questionCounter]["question"];
   generarRespuestas(questionCounter);
+  marcarCorrecta();
   if (p1.textContent == quizElements[0]["question"]){
     btnPreview.disabled = true;
   }
@@ -92,6 +108,7 @@ btnNext.addEventListener("click", () =>{
   p1.textContent = quizElements[questionCounter]["question"];
   
   generarRespuestas(questionCounter);
+  marcarCorrecta();
   if (p1.textContent == quizElements.at(-1)["question"]){
     btnNext.disabled = true;
   }
