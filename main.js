@@ -10,7 +10,13 @@ const quizElements = [{"question": "What is the capital of France?", "answers": 
 let questionCounter = 0;
 
 const controllersText = ["Preview", "Next"];
-
+//Función para marcar respuestas
+function marcarRespuesta(btn) { 
+  ul1.childNodes.forEach((li) => {
+    li.firstChild.style.backgroundColor = "#f8f8f8";
+  });
+  btn.style.backgroundColor = "#3CB371"; 
+}
 // Función para generar las respuestas 
 function generarRespuestas (indice){
   while (ul1.firstChild){
@@ -21,6 +27,9 @@ function generarRespuestas (indice){
     let li = document.createElement("li");
     btn.className = "answer-btn";
     btn.textContent = answer;
+    btn.addEventListener("click", () => { 
+      marcarRespuesta(btn);
+    });
     li.append(btn);
     ul1.append(li);
   });
